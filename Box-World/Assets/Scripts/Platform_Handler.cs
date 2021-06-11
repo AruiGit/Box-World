@@ -23,13 +23,13 @@ public class Platform_Handler : MonoBehaviour
         CheckPlayerPosition();
         areasArrey = GameObject.FindGameObjectsWithTag("Map_Area");
 
-        if (playerOffSetX % 3 == 0 && playerOffSetX!=0 && playerOffSetX>0)
+        if (playerOffSetX % 3 == 0 && playerOffSetX!=0 )
         {
-            SpawnAreasOnRight();
+            SpawnAreasHorizontal();
         }
-        if(playerOffSetX % 3 == 0 && playerOffSetX != 0 && playerOffSetX < 0)
+        if (playerOffSetY != 0 && playerOffSetY % 3 == 0 )
         {
-            SpawnAreasOnLeft();
+            SpawnAreasVertical();
         }
     }
 
@@ -42,7 +42,7 @@ public class Platform_Handler : MonoBehaviour
         playerPositionY = characterControler.CheckPlayerPositionY();
     }
 
-    void SpawnAreasOnRight()
+    void SpawnAreasHorizontal()
     {
         foreach(GameObject area in areasArrey)
         {
@@ -56,17 +56,20 @@ public class Platform_Handler : MonoBehaviour
         
     }
 
-    void SpawnAreasOnLeft()
+
+
+    void SpawnAreasVertical()
     {
-        Debug.Log("Spawning areas on left");
-        foreach (GameObject area in areasArrey)
+        foreach(GameObject area in areasArrey)
         {
-            if (area.transform.position.x == playerPositionX - 1 - playerOffSetX * 2)
+            if (area.transform.position.y== playerPositionY -1 - playerOffSetY * 2)
             {
-                float yPosition = area.transform.position.y;
+                float xPosition = area.transform.position.x;
                 Destroy(area.gameObject);
-                Instantiate(areaPrefab, new Vector3(playerPositionX + playerOffSetX - 1, yPosition, 0), Quaternion.identity);
+                Instantiate(areaPrefab, new Vector3(xPosition, playerPositionY+playerOffSetY-1, 0), Quaternion.identity);
             }
+
         }
     }
+
 }

@@ -6,17 +6,26 @@ public class Character_Controler : MonoBehaviour
 {
 
     public int xOffSet, yOffSet = 0;
+    int playerMovement;
+
+    Game_Manager gameManager;
+    Player player;
     
     void Start()
     {
-        
+        gameManager = GameObject.Find("Game_Manager").GetComponent<Game_Manager>();
+        player = GetComponent<Player>();
+        playerMovement = player.GetSpeed();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
-        Debug.Log(xOffSet % 3);
+        if (gameManager.GetTurn())
+        {
+            Movement();
+            Debug.Log(xOffSet % 3);
+        }
     }
 
     void Movement()
@@ -24,6 +33,7 @@ public class Character_Controler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             gameObject.transform.Translate(Vector2.right);
+            playerMovement--;
             if (xOffSet == 3)
             {
                 xOffSet = 1;
@@ -41,6 +51,7 @@ public class Character_Controler : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A))
         {
             gameObject.transform.Translate(Vector2.left);
+            playerMovement--;
             if (xOffSet == -3)
             {
                 xOffSet = -1;
@@ -58,12 +69,42 @@ public class Character_Controler : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W))
         {
             gameObject.transform.Translate(Vector2.up);
-            yOffSet++;
+            playerMovement--;
+            if (yOffSet == 3)
+            {
+                yOffSet = 1;
+            }
+            else if (yOffSet == -3)
+            {
+                yOffSet = 1;
+            }
+            else
+            {
+                yOffSet++;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             gameObject.transform.Translate(Vector2.down);
-            yOffSet--;
+            playerMovement--;
+            if (yOffSet == -3)
+            {
+                yOffSet = -1;
+            }
+            else if (yOffSet == 3)
+            {
+                yOffSet = -1;
+            }
+            else
+            {
+                yOffSet--;
+            }
+        }
+        
+        if (playerMovement <= 0)
+        {
+            gameManager.ChangeTurn();
+            playerMovement = player.GetSpeed();
         }
     }
 
@@ -75,12 +116,10 @@ public class Character_Controler : MonoBehaviour
     {
         return yOffSet;
     }
-
     public float CheckPlayerPositionX()
     {
         return transform.position.x;
     }
-
     public float CheckPlayerPositionY()
     {
         return transform.position.y;
