@@ -24,7 +24,6 @@ public class Character_Controler : MonoBehaviour
         if (gameManager.GetTurn())
         {
             Movement();
-            Debug.Log(xOffSet % 3);
         }
     }
 
