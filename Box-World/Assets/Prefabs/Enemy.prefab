@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6516478235509015988}
   - component: {fileID: 6516478235509015984}
   - component: {fileID: 6516478235509015987}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -48,6 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 6516478235509015991}
   speed: 2
+  enemyMovement: 0
+  enemyAttacks: 0
+  healthPoints: 5
+  heartPickUpPrefab: {fileID: 5370661608772086376, guid: 613777b4cfe9d98458e261d8003aa62d, type: 3}
 --- !u!212 &6516478235509015988
 SpriteRenderer:
   m_ObjectHideFlags: 0

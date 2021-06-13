@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Map_Area
+  - Enemy
+  - Item
+  - PickUpHeart
+  - PickUpMoney
   layers:
   - Default
   - TransparentFX
@@ -20,7 +24,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Enemy
   - 
   - 
   - 

@@ -10,7 +10,9 @@ public class Character_Controler : MonoBehaviour
 
     Game_Manager gameManager;
     Player player;
-    
+    public GameObject attackPrefab;
+    bool canEndTurn = false;
+
     void Start()
     {
         gameManager = GameObject.Find("Game_Manager").GetComponent<Game_Manager>();
@@ -24,14 +26,24 @@ public class Character_Controler : MonoBehaviour
         if (gameManager.GetTurn())
         {
             Movement();
+            Attack();
         }
     }
 
     void Movement()
     {
+        
+        RaycastHit2D ray;
+       
+
         if (Input.GetKeyDown(KeyCode.D))
         {
-            gameObject.transform.Translate(Vector2.right);
+            ray = Physics2D.Raycast(transform.position, Vector2.right, 0.8f, LayerMask.GetMask("Enemy"));
+            if (ray.collider == null)
+            {
+                gameObject.transform.Translate(Vector2.right);
+            }
+            
             playerMovement--;
             if (xOffSet == 3)
             {
@@ -45,11 +57,16 @@ public class Character_Controler : MonoBehaviour
             {
                 xOffSet++;
             }
-            
+
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            gameObject.transform.Translate(Vector2.left);
+            ray = Physics2D.Raycast(transform.position, Vector2.left, 0.8f, LayerMask.GetMask("Enemy"));
+            if (ray.collider == null)
+            {
+                gameObject.transform.Translate(Vector2.left);
+            }
+                
             playerMovement--;
             if (xOffSet == -3)
             {
@@ -63,11 +80,14 @@ public class Character_Controler : MonoBehaviour
             {
                 xOffSet--;
             }
-
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            gameObject.transform.Translate(Vector2.up);
+            ray = Physics2D.Raycast(transform.position, Vector2.up, 0.8f, LayerMask.GetMask("Enemy"));
+            if (ray.collider == null)
+            {
+                gameObject.transform.Translate(Vector2.up);
+            }
             playerMovement--;
             if (yOffSet == 3)
             {
@@ -84,7 +104,11 @@ public class Character_Controler : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            gameObject.transform.Translate(Vector2.down);
+            ray = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, LayerMask.GetMask("Enemy"));
+            if (ray.collider == null)
+            {
+                gameObject.transform.Translate(Vector2.down);
+            }
             playerMovement--;
             if (yOffSet == -3)
             {
@@ -100,10 +124,36 @@ public class Character_Controler : MonoBehaviour
             }
         }
         
-        if (playerMovement <= 0)
+        if (playerMovement <= 0 )
         {
-            gameManager.ChangeTurn();
-            playerMovement = player.GetSpeed();
+                canEndTurn = false;
+                gameManager.ChangeTurn();
+        }
+        transform.position = new Vector3((int)transform.position.x, (int)transform.position.y, -1);
+        
+    }
+
+    void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Instantiate(attackPrefab, new Vector3(transform.position.x, transform.position.y + 1, transform.position.z-1), Quaternion.identity);
+            playerMovement--;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Instantiate(attackPrefab, new Vector3(transform.position.x, transform.position.y - 1, transform.position.z-1), Quaternion.identity);
+            playerMovement--;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Instantiate(attackPrefab, new Vector3(transform.position.x + 1, transform.position.y, transform.position.z-1), Quaternion.identity);
+            playerMovement--;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Instantiate(attackPrefab, new Vector3(transform.position.x - 1, transform.position.y, transform.position.z-1), Quaternion.identity);
+            playerMovement--;
         }
     }
 
@@ -122,5 +172,13 @@ public class Character_Controler : MonoBehaviour
     public float CheckPlayerPositionY()
     {
         return transform.position.y;
+    }
+    public int GetPlayerMovesCounter()
+    {
+        return playerMovement;
+    }
+    public void ResetMovement()
+    {
+        playerMovement = player.GetSpeed();
     }
 }
